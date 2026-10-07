@@ -1,8 +1,7 @@
 
 # Projekt gra budowniczy
 
-![image](screen.jpg)
-
+![image](screen.png)
 
 
 
