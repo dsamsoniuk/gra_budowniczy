@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BuildingController!{% endblock %}
+
+{% block body %}
+<style>
+
+.image-box {
+    width: 300px;
+    height: 200px;
+    display: block;
+    /* background:grey; */
+    border-radius: 20px;
+    padding:20px;
+    border-color: white;
+    border-style:solid;
+    border-width: 2px;
+}
+.image-av {
+    width: 150px;
+    height: 150px;
+    /* background:orange; */
+    /* background: url("/images/bud1.png") no-repeat; */
+    /* background-position: -64px -32px;  */
+    background-position: 0 0; 
+    background-repeat: no-repeat;
+}
+.image-title {
+    width: inherit;
+    font-weight: bold;
+    /* background:red; */
+}
+
+.image-row {
+    width: 100%;
+    display: inline-flex;
+}
+</style>
+
+<div class="container">
+
+
+    <div class="image-box">
+        <div class="image-row">
+            <div class="image-title ">Farma zwierząt</div>
+        </div>
+        <div class="image-row">
+                <div class="image-av" style="background: url('/images/bud1.png')"></div>
+                <div class="image-action">
+                    <button class="btn btn-primary w-100 ">Buduj</button>
+                    <div class="image-stats mt-2">
+                        Złoto: 10zl
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+{% endblock %}

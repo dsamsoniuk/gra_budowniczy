@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+
+        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
+        {% if frankenphp_hot_reload %}
+        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
+        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+        {% endif %}
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('app_main')}}">index</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('app_building')}}">app_building</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('app_register')}}">app_register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('app_login')}}">app_login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('admin')}}">admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{path('app_main')}}" 
+                        data-controller="profile"
+                        data-action="building:reloadStats@window->profile#reloadStats"
+                        >Zasoby:</a>
+                    </li>
+                </ul>
+                
+            </div>
+
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

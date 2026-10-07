@@ -1,0 +1,50 @@
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: database
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
+      MYSQL_USER: ${MYSQL_USER:-app}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-app}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-app}
+    volumes:
+      - database_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - granet
+  php:
+    build: ./
+    container_name: php_server
+    volumes:
+      - ./:/app
+    ports:
+      - 80:80
+    networks:
+      - granet
+    depends_on:
+      - database
+
+  messenger-worker:
+    build:
+      context: ./
+    container_name: messenger
+    # Nadpisujemy domyślną komendę z Dockerfile, aby kontener uruchomił workera
+    command: php bin/console messenger:consume async -vv --time-limit=3600
+    volumes:
+      - .:/app
+    restart: always # Docker automatycznie podniesie workera, jeśli ten się wyłoży
+    depends_on:
+      - php
+      - database
+    networks:
+      - granet
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###
+networks:
+  granet:
+    driver: bridge

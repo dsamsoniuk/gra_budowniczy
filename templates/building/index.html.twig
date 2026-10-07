@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BuildingController!{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+
+    <div class="container" data-controller="building">
+
+        <template data-building-target="template">
+            <div class="image-box">
+                <div class="image-row">
+                    <div class="image-title">Farma zwierząt</div>
+                </div>
+                <div class="image-row">
+                        <div class="image-av" style="background: url('/images/bud1.png')"></div>
+                        <div>
+                            <div class="image-action">
+                                <button class="btn btn-primary w-100 action-build" data-action="click->building#createBuilding">Buduj</button>
+                                <button class="btn btn-danger w-100 action-delete" data-action="click->building#deleteBuilding">Usun</button>
+                            </div>
+                            <div class="image-stats mt-2"></div>
+                        </div>
+                </div>
+            </div>
+        </template>
+
+        <div class="row">
+
+            <div class="col col-4 border-w ">
+                <h3>Lista budynkow</h3>
+                <div id="building-list" class="box-overflow" data-building-target="listAvailableBuildings"
+                >-</div>
+            </div>
+
+            <div class="col col-4">
+                <h1>W budowie</h1>
+                <div id="building-construction" class="box-overflow" data-building-target="listConstructedBuildings"
+                >-</div>
+            </div>
+            
+            <div class="col col-4">
+                <h1>Moje budynki</h1>
+                <div id="user-building" class="box-overflow" data-building-target="listUserBuildings">-</div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %}
