@@ -14,6 +14,14 @@ services:
       - 3306:3306
     networks:
       - granet
+    healthcheck:
+      # Używamy mysqladmin ping, jawnie podając użytkownika, hasło oraz host 127.0.0.1 (wymusza TCP)
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER -p$$MYSQL_PASSWORD"]
+      interval: 3s      # Jak często sprawdzać
+      timeout: 3s       # Ile sekund czekać na odpowiedź
+      retries: 10       # Ile prób podjąć przed uznaniem, że kontener padł
+      start_period: 10s # Czas na inicjalizację bazy (wtedy niepowodzenia testów są ignorowane)
+
   php:
     build: ./
     container_name: php_server
@@ -36,8 +44,10 @@ services:
       - .:/app
     restart: always # Docker automatycznie podniesie workera, jeśli ten się wyłoży
     depends_on:
-      - php
-      - database
+        database:
+          condition: service_healthy # Uruchomi messengera dopiero, gdy mysql przejdzie pomyślnie test powyżej
+        php:
+          condition: service_started  # Czeka tylko, aż kontener php po prostu wystartuje
     networks:
       - granet
 
