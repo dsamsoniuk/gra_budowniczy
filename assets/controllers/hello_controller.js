@@ -7,7 +7,7 @@ export default class extends Controller {
     static targets = ["ufo"]
     static values = {
         ilosc: Number, 
-        products: Object, 
+        products: Object, // w html-u jest wpiety json
         wartosc: {type: Number, default: 3}
     }
     connect() {
