@@ -15,9 +15,9 @@ export default class extends Controller {
         this.sources = { gold: body.source_gold }
 
         const content = Object.entries(this.sources).map(([key,value]) => {
-            return `${key}:${value}`
+            return `${key}: ${value}`
         })
 
-        this.element.innerHTML = `Zasoby: ${content}`
+        this.element.innerHTML = `ZASOBY ${content} (aktualizacja co 5min)`
     }
 }

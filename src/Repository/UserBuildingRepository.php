@@ -16,13 +16,18 @@ class UserBuildingRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, UserBuilding::class);
     }
-    // public function findBuildings(User $user){
-    //     return $this->createQueryBuilder('ub')
-    //         ->join('')
-    //         ->getQuery()
-    //         ->getArrayResult()
-    //         ;
-    // }
+    public function getSumBuildingsProfit(int $userId): int{
+        return (int)$this->createQueryBuilder('ub')
+            ->select('SUM(b.goldCost)')
+            ->leftJoin('ub.building','b', 'b.id = ub.building_id')
+            ->where('ub.user = :userId')
+            ->andWhere('ub.status = :status')
+            ->setParameter('status', "finished")
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getSingleScalarResult() ?? 0
+            ;
+    }
 //    /**
 //     * @return UserBuilding[] Returns an array of UserBuilding objects
 //     */

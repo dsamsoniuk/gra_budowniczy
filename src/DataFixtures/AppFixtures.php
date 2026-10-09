@@ -11,8 +11,8 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $b = new User();
-        $b->setRoles(['ROLE_USER']);
+        // $b = new User();
+        // $b->setRoles(['ROLE_USER']);
 
         // $manager->persist($b);
 
