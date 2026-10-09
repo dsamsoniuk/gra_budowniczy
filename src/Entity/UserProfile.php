@@ -18,7 +18,9 @@ class UserProfile
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $user = null;
-
+    public function __construct(){
+        $this->sourceGold = 0;
+    }
     public function getId(): ?int
     {
         return $this->id;

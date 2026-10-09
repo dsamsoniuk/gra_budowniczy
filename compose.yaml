@@ -42,7 +42,7 @@ services:
     command: php bin/console messenger:consume async -vv --time-limit=3600
     volumes:
       - .:/app
-    restart: always # Docker automatycznie podniesie workera, jeśli ten się wyłoży
+    # restart: always # Docker automatycznie podniesie workera, jeśli ten się wyłoży
     depends_on:
         database:
           condition: service_healthy # Uruchomi messengera dopiero, gdy mysql przejdzie pomyślnie test powyżej

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserProfile;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,8 +28,13 @@ class RegistrationController extends AbstractController
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-
+            $user->setRoles(['ROLE_ADMIN']);
+            
+            $profile = new UserProfile();
+            $profile->setUser($user);
+            $profile->setSourceGold(100);
             $entityManager->persist($user);
+            $entityManager->persist($profile);
             $entityManager->flush();
 
             // do anything else you need here, like send an email
