@@ -21,6 +21,7 @@ class Schedule implements ScheduleProviderInterface
     {
         return (new SymfonySchedule())->add(
             RecurringMessage::every('5 minute', new RewardForBuilding())
-        );
+            )
+            ->stateful($this->cache); // Dodatkowa opcja zapisuje w cache zamiast tylko w RAM
     }
 }
