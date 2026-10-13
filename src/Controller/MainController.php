@@ -21,8 +21,8 @@ final class MainController extends AbstractController
          * @var User
          */
         $u = $this->getUser();
-        $res = $ubr->getSumBuildingsProfit($u->getId());
-        dump($res);
+        // $res = $ubr->getSumBuildingsProfit($u->getId());
+        // dump($res);
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
         ]);

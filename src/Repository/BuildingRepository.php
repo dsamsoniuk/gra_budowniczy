@@ -35,13 +35,13 @@ class BuildingRepository extends ServiceEntityRepository
     // TimestampDiff
     return $this->createQueryBuilder('b')
         ->select([
-            'b.id', 'ub.id ub_id', 'b.name', 'b.buildTime', 'b.goldCost', 'ub.finishTime', 'b.avatar',
+            'b.id', 'ub.id ub_id', 'b.name', 'b.buildTime', 'b.goldCost', 'ub.finishTime', 'b.avatar', 'ub.status',
             'TIMESTAMPDIFF(SECOND, CURRENT_TIMESTAMP(), ub.finishTime) timeLeft'])
         ->leftJoin('b.userBuildings', 'ub', 'ub.building_id = b.id')
         ->where('ub.user = :user')
-        ->andWhere('ub.status = :status')
+        // ->andWhere('ub.status = :status')
         ->setParameter('user', $user)
-        ->setParameter('status', $status)
+        // ->setParameter('status', $status)
         ->orderBy('ub.id', 'asc')
         ->getQuery()
         ->getArrayResult()

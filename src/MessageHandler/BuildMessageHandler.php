@@ -20,10 +20,12 @@ final class BuildMessageHandler{
          * @var UserBuilding
          */
         $userBuilding = $this->ubRepo->find($message->getId());
-        $userBuilding->setStatus('finished');
+        // if ($userBuilding) {
+            $userBuilding->setStatus('finished');
+            $this->em->persist($userBuilding);
+            $this->em->flush();
+        // }
 
-        $this->em->persist($userBuilding);
-        $this->em->flush();
         // do something with your message
     }
 }

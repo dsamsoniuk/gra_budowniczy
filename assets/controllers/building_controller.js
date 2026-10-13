@@ -18,7 +18,7 @@ export default class extends Controller {
     timer = null
     avatarPath = ''
     availableBuildings = []
-    buildingsInConstruction = []
+    userBuildings = []
     userBuildings = []
 
     connect() {
@@ -35,8 +35,8 @@ export default class extends Controller {
 
     displayBuildings(){
         this.listAvailableBuildingsTarget.replaceChildren(...this.createBuildingList(this.availableBuildings, 'create'))
-        this.listConstructedBuildingsTarget.replaceChildren(...this.createBuildingList(this.buildingsInConstruction, 'construct'))
-        this.listUserBuildingsTarget.replaceChildren(...this.createBuildingList(this.userBuildings, 'builded'))
+        this.listUserBuildingsTarget.replaceChildren(...this.createBuildingList(this.userBuildings, 'construct'))
+        // this.listUserBuildingsTarget.replaceChildren(...this.createBuildingList(this.userBuildings, 'builded'))
     }
 
     runTimer(){
@@ -44,23 +44,25 @@ export default class extends Controller {
         this.timer = setInterval(() => {
 
             var finishedBuilding = false
+            var noConstructions = true
 
-            if (self.buildingsInConstruction.length === 0) {
-                clearInterval(this.timer)
-            }
-
-            self.buildingsInConstruction.forEach((element, index) => {
-                if (element.timeLeft <= 0) {finishedBuilding = index}
+            self.userBuildings.forEach((building, index) => {
+                if (building.status == 'construction') {
+                    noConstructions = false
+                    building.timeLeft--
+                    if (building.timeLeft <= 0) {finishedBuilding = true}
+                }
             });
-
-            if (finishedBuilding !== false) {
-                // self.buildingsInConstruction.splice(finishedBuilding, 1)
+            if (noConstructions) {
+                clearInterval(this.timer)
+                return
+            }
+            if (finishedBuilding) {
                 self.reloadBuildingsList()
                 return
             }
 
-            self.listConstructedBuildingsTarget.replaceChildren(...self.createBuildingList(self.buildingsInConstruction, 'construct'))
-            // console.log('reload timer', self.buildingsInConstruction)
+            self.listUserBuildingsTarget.replaceChildren(...self.createBuildingList(self.userBuildings, 'construct'))
         }, 1000)
     }
 
@@ -92,20 +94,16 @@ export default class extends Controller {
     //  * @property {string} name - Nazwa budynku
     //  */
     // /**@param {BuildingInterface} building */
-    createBuildingTemplate({mode = '', building = null, actions = ''}){
+    createBuildingTemplate({mode = '', building = null}){
         // CIEkAWOSTKA. tag template tylko posiada content -- to jest pod JS  zrobione
         const clone = this.templateTarget.content.cloneNode(true) 
 
-        if (mode == 'construct') {
+        if (building.status == 'construction') {
             // timeLeft += `- czas: ${building.timeLeft}`
-            building.timeLeft--;
+            // building.timeLeft--;
             /** @type HTMLElement */
             const eleStats = clone.querySelector('.image-stats')
                 eleStats.innerText = `czas: ${building.timeLeft}s`
-
-            /** @type HTMLElement */
-            const ele = clone.querySelector('.image-av')
-                ele.style.background = `url('/images/construct.png')`
 
         } else if (mode == 'create') {
             /** @type HTMLElement */
@@ -128,11 +126,13 @@ export default class extends Controller {
             const eleStats = clone.querySelector('.image-stats')
                 eleStats.innerText = `Koszt:  ${building.goldCost} sz. zł`
         }
-        if (mode == 'create' || mode == 'builded') {
-            /** @type HTMLElement */
-            const ele = clone.querySelector('.image-av')
-                ele.style.background = `url('${this.avatarPath}/${building.avatar}')`
-        }
+
+        /** @type HTMLElement */
+        const ele = clone.querySelector('.image-av')
+        if (building.status === "finished" || mode == 'create')
+            ele.style.background = `url('${this.avatarPath}/${building.avatar}')`
+        else
+            ele.style.background = `url('/images/construct.png')`
 
         /** @type HTMLElement */
         const eleTitle = clone.querySelector('.image-title')
@@ -157,7 +157,7 @@ export default class extends Controller {
         this.availableBuildings = data['data']
 
         const responsec = await fetch('/building/user-constructions')
-        this.buildingsInConstruction = await responsec.json()
+        this.userBuildings = await responsec.json()
 
         const responseb = await fetch('/building/user-buildings')
         this.userBuildings = await responseb.json()

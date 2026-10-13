@@ -6,42 +6,41 @@
 
 <div class="example-wrapper">
 
-    <div class="container" data-controller="building">
+    <div class="container-flex" data-controller="building">
 
         <template data-building-target="template">
             <div class="image-box">
+                {# <div class="image-row">
+                    
+                </div> #}
                 <div class="image-row">
-                    <div class="image-title">Farma zwierząt</div>
-                </div>
-                <div class="image-row">
-                        <div class="image-av" style="background: url('/images/bud1.png')"></div>
-                        <div>
-                            <div class="image-action">
-                                <button class="btn btn-primary w-100 action-build" data-action="click->building#createBuilding">Buduj</button>
-                                <button class="btn btn-danger w-100 action-delete" data-action="click->building#deleteBuilding">Usun</button>
-                            </div>
-                            <div class="image-stats mt-2"></div>
+                    
+                    <div class="image-av" style="background: url('/images/bud1.png')">
+                        <div class="image-title"></div>
+
+                        <div class="image-action">
+                            <button class="btn btn-sm btn-primary action-build" data-action="click->building#createBuilding">Buduj</button>
+                            <button class="btn btn-sm btn-warning action-delete" data-action="click->building#deleteBuilding"> x </button>
                         </div>
+                    </div>
+                    <div>
+                        
+                        <div class="image-stats mt-2"></div>
+                    </div>
                 </div>
             </div>
         </template>
 
         <div class="row">
 
-            <div class="col col-4 border-w p-3">
+            <div class="col col-3 border-w p-3">
                 <h3 class="text-center">Lista budynkow</h3>
-                <div id="building-list" class="box-overflow" data-building-target="listAvailableBuildings"
+                <div id="building-list" class="box-overflow p-3" data-building-target="listAvailableBuildings"
                 >-</div>
             </div>
 
-            <div class="col col-4">
-                <h1>W budowie</h1>
-                <div id="building-construction" class="box-overflow" data-building-target="listConstructedBuildings"
-                >-</div>
-            </div>
             
-            <div class="col col-4">
-                <h1>Moje budynki</h1>
+            <div class="col col-8 pt-5">
                 <div id="user-building" class="box-overflow" data-building-target="listUserBuildings">-</div>
             </div>
         </div>
